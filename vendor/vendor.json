@@ -1,5 +1,12 @@
 {
 	"comment": "",
+	"heroku": {
+                "goVersion": "1.12.7",
+                "install": [
+                        "./..."
+                ],
+                "sync": true
+        },
 	"ignore": "test",
 	"package": [
 		{
