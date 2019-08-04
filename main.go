@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
+	//gin.SetMode(gin.ReleaseMode)
 
 	httpsRedirectRouter := gin.Default()
 	httpsRedirectRouter.GET("/*anything", func(c *gin.Context) {
