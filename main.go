@@ -11,8 +11,16 @@ import (
 
 func main() {
 	gin.SetMode(gin.ReleaseMode)
+
+	httpsRedirectRouter := gin.Default()
+	httpsRedirectRouter.GET("/*anything", func(c *gin.Context) {
+		c.Redirect(301, "https://www.pathfindersrobotics.org/" + c.Param(anything))
+	}
+	go log.Fatal(http.ListenAndServe(":" + os.Getenv("HTTP_PORT"), httpsRedirectRouter))
+
 	router := gin.Default()
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.Use(static.Serve("/", static.LocalFile("./static", true)))
-	log.Fatal(http.ListenAndServe(":" + os.Getenv("PORT"), router))
+
+	log.Fatal(http.ListenAndServe(":" + os.Getenv("HTTPS_PORT"), router))
 }
