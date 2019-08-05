@@ -16,7 +16,8 @@ func main() {
 	httpsRedirectRouter.GET("/*anything", func(c *gin.Context) {
 		c.Redirect(301, "https://www.pathfindersrobotics.org/" + c.Param("anything"))
 	})
-	go log.Fatal(http.ListenAndServe(":" + os.Getenv("HTTP_PORT"), httpsRedirectRouter))
+	//go log.Fatal(http.ListenAndServe(":" + os.Getenv("HTTP_PORT"), httpsRedirectRouter))
+	go httpsRedirectRouter.Run(":" + os.Getenv("HTTP_PORT"))
 
 	router := gin.Default()
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
