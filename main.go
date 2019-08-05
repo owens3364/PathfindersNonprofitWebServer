@@ -13,8 +13,9 @@ func main(){
 	router := gin.Default()
 	router.Use(func() gin.HandlerFunc {
                 return func(c *gin.Context) {
+			c.Header("X-Frame-Options", "deny")
 			if os.Getenv("GIN_MODE") == "release" {
-				if c.Request.Header.Get("x-forwarded-proto") != "https" {
+				if c.Request.Header.Get("X-Forwarded-Proto") != "https" {
 					c.Redirect(http.StatusMovedPermanently, "https://www.pathfindersrobotics.org" + c.Request.URL.Path)
 				}
 			}
