@@ -12,7 +12,7 @@ import (
 func main() {
 	//gin.SetMode(gin.ReleaseMode)
 
-	httpsRedirectRouter := gin.Default()
+	httpsRedirectRouter := gin.New()
 	httpsRedirectRouter.GET("/*anything", func(c *gin.Context) {
 		c.Redirect(301, "https://www.pathfindersrobotics.org/" + c.Param("anything"))
 	})
