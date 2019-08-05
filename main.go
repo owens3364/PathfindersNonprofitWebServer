@@ -14,6 +14,7 @@ func main(){
 	router := gin.Default()
 	router.Use(func() gin.HandlerFunc {
                 return func(c *gin.Context) {
+			log.Println(c.Request.Header.Get("X-Forwarded-Proto"))
                         err := secure.New(secure.Options {
                                 SSLRedirect: true,
                         }).Process(c.Writer, c.Request)
