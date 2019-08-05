@@ -70,12 +70,6 @@
 			"revisionTime": "2019-03-09T16:37:34Z"
 		},
 		{
-			"checksumSHA1": "nuxtXSoDFgNGJxXdMG00juFxwRY=",
-			"path": "github.com/unrolled/secure",
-			"revision": "f216236dcfc980ca06e5e4281a74f8869fb590fd",
-			"revisionTime": "2019-08-04T15:08:17Z"
-		},
-		{
 			"checksumSHA1": "NgWDLS4iiAvSfZZAWXasaNI9dnk=",
 			"path": "golang.org/x/sys/unix",
 			"revision": "d432491b91382bba9c2a91776aa47c9430183a6f",

@@ -15,7 +15,7 @@ func main(){
                 return func(c *gin.Context) {
 			if os.Getenv("GIN_MODE") == "release" {
 				if c.Request.Header.Get("x-forwarded-proto") != "https" {
-					c.Redirect(http.StatusMovedPermanently, "https://www.pathfindersrobotics" + c.Request.URL.Path)
+					c.Redirect(http.StatusMovedPermanently, "https://www.pathfindersrobotics.org" + c.Request.URL.Path)
 				}
 			}
                 }
