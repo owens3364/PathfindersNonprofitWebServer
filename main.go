@@ -4,7 +4,6 @@ import (
 "github.com/gin-gonic/gin"
 "github.com/gin-contrib/gzip"
 "github.com/gin-contrib/static"
-"github.com/unrolled/secure"
 "log"
 "net/http"
 "os"
@@ -14,15 +13,11 @@ func main(){
 	router := gin.Default()
 	router.Use(func() gin.HandlerFunc {
                 return func(c *gin.Context) {
-			log.Println(c.Request.Header.Get("X-Forwarded-Proto"))
-                        err := secure.New(secure.Options {
-                                SSLRedirect: true,
-                        }).Process(c.Writer, c.Request)
-                        if err != nil {
-                                log.Println(err)
-                                return
-                        }
-                        c.Next()
+			if os.Getenv("GIN_MODE") == "release" {
+				if c.Request.Header.Get("x-forwarded-proto") != "https" {
+					c.Redirect(http.StatusMovedPermanently, "https://www.pathfindersrobotics" + c.Request.URL.Path)
+				}
+			}
                 }
         }())
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
