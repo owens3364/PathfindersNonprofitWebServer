@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "eb8b924744aca708d759f0050cde355c",
+    "revision": "b46dc817f9074543d28d747454f8dc2e",
     "url": "/index.html"
   },
   {
-    "revision": "a823db853e52c55e7df1",
+    "revision": "55ff708852a06b31ccb3",
     "url": "/static/css/2.1e66eaca.chunk.css"
   },
   {
-    "revision": "4090ef3d061a462b1db4",
+    "revision": "cc09d9ab7acab680be14",
     "url": "/static/css/main.83106d38.chunk.css"
   },
   {
-    "revision": "a823db853e52c55e7df1",
-    "url": "/static/js/2.df06e9a3.chunk.js"
+    "revision": "55ff708852a06b31ccb3",
+    "url": "/static/js/2.a12d0e60.chunk.js"
   },
   {
-    "revision": "4090ef3d061a462b1db4",
-    "url": "/static/js/main.cd029c34.chunk.js"
+    "revision": "cc09d9ab7acab680be14",
+    "url": "/static/js/main.25c2f240.chunk.js"
   },
   {
     "revision": "42ac5946195a7306e2a5",
@@ -98,18 +98,6 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "4ce03759e76e1f0e5c492e5ac5e547a0",
     "url": "/static/media/KristenStone.4ce03759.jpg"
-  },
-  {
-    "revision": "bbbc251ed75fb40d01e6cc932753aca3",
-    "url": "/static/media/Magazine1.bbbc251e.jpg"
-  },
-  {
-    "revision": "7e3a6793efca0af14f7f843bf2236202",
-    "url": "/static/media/Magazine2.7e3a6793.jpg"
-  },
-  {
-    "revision": "83cb2c56a8073c4dcd991b1d4575b5e9",
-    "url": "/static/media/Magazine3.83cb2c56.jpg"
   },
   {
     "revision": "4eed80be485e8a9cbb4dc8b177cb4e3d",
