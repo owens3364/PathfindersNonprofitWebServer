@@ -64,6 +64,30 @@
 			"revisionTime": "2019-02-25T17:38:24Z"
 		},
 		{
+			"checksumSHA1": "CvTCURKzUkuS6BfTFmh0KWHuyC4=",
+			"path": "github.com/stripe/stripe-go",
+			"revision": "b9bec11fb41e8f460420102eb66f2153ca5d6d75",
+			"revisionTime": "2019-03-14T04:00:48Z"
+		},
+		{
+			"checksumSHA1": "30pE9tZFPV4qmBPC3eo3WnJ1ncw=",
+			"path": "github.com/stripe/stripe-go/charge",
+			"revision": "b9bec11fb41e8f460420102eb66f2153ca5d6d75",
+			"revisionTime": "2019-03-14T04:00:48Z"
+		},
+		{
+			"checksumSHA1": "xejCgKm5pUb2gfsEOwUL9PTqMrU=",
+			"path": "github.com/stripe/stripe-go/form",
+			"revision": "b9bec11fb41e8f460420102eb66f2153ca5d6d75",
+			"revisionTime": "2019-03-14T04:00:48Z"
+		},
+		{
+			"checksumSHA1": "T4P9KrZJg8MkFxcLFIuwK7eIXPc=",
+			"path": "github.com/stripe/stripe-go/paymentintent",
+			"revision": "b9bec11fb41e8f460420102eb66f2153ca5d6d75",
+			"revisionTime": "2019-03-14T04:00:48Z"
+		},
+		{
 			"checksumSHA1": "kTdRzOQQwONuwY2MYJUao8Nu1wE=",
 			"path": "github.com/ugorji/go/codec",
 			"revision": "c4a1c341dc9362948f6b026f9873abf42a0f6ce9",
