@@ -113,6 +113,20 @@ func main() {
 		fmt.Println("The environment variable 'SERVING_SITE' did not have a valid 'true' or 'false' value. Ensure the 'SERVING_SITE' key is present and has a value of 'true' or 'false'. All site serving functionality is currently disabled.")
 	}
 
+	router.Use(func() gin.HandlerFunc {
+		return func(c *gin.Context) {
+			path := c.Request.URL.Path
+			if string([]rune(path)[0:1]) != "/" {
+				path = "/" + path
+			}
+			if path == "/" || string([]rune(path)[0:7]) == "/static" {
+				c.Header("Cache-Control", "max-age=31536000")
+			} else {
+				c.Header("Cache-Control", "no-cache")
+			}
+		}
+	}())
+
 	// Email Payment notifications
 
 	notifications, notifErr := strconv.ParseBool(os.Getenv("EMAIL_PAYMENT_NOTIFICATIONS"))
