@@ -99,20 +99,7 @@ func main() {
 	}
 	router.Use(gzip.Gzip(compressionLevel))
 
-	// Static serve site
-
-	siteServing, siteErr := strconv.ParseBool(os.Getenv("SERVING_SITE"))
-	if siteErr == nil {
-		if siteServing {
-			router.Use(static.Serve("/", static.LocalFile("./static", true)))
-			fmt.Println("Site is being served per the 'SERVING_SITE' environment variable")
-		} else {
-			fmt.Println("Site is not being served, per the 'SERVING_SITE' environment variable.")
-		}
-	} else {
-		fmt.Println("The environment variable 'SERVING_SITE' did not have a valid 'true' or 'false' value. Ensure the 'SERVING_SITE' key is present and has a value of 'true' or 'false'. All site serving functionality is currently disabled.")
-	}
-
+	// Have a cache policy of one year for index.html and static assets
 	router.Use(func() gin.HandlerFunc {
 		return func(c *gin.Context) {
 			path := c.Request.URL.Path
@@ -129,6 +116,20 @@ func main() {
 			}
 		}
 	}())
+
+	// Static serve site
+
+	siteServing, siteErr := strconv.ParseBool(os.Getenv("SERVING_SITE"))
+	if siteErr == nil {
+		if siteServing {
+			router.Use(static.Serve("/", static.LocalFile("./static", true)))
+			fmt.Println("Site is being served per the 'SERVING_SITE' environment variable")
+		} else {
+			fmt.Println("Site is not being served, per the 'SERVING_SITE' environment variable.")
+		}
+	} else {
+		fmt.Println("The environment variable 'SERVING_SITE' did not have a valid 'true' or 'false' value. Ensure the 'SERVING_SITE' key is present and has a value of 'true' or 'false'. All site serving functionality is currently disabled.")
+	}
 
 	// Email Payment notifications
 
