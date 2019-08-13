@@ -116,11 +116,12 @@ func main() {
 	router.Use(func() gin.HandlerFunc {
 		return func(c *gin.Context) {
 			path := c.Request.URL.Path
-			fmt.Println(path)
 			if string([]rune(path)[0:1]) != "/" {
 				path = "/" + path
 			}
 			fmt.Println(path)
+			fmt.Println(path == "/")
+			fmt.Println(string([]rune(path)[0:7]) == "/static")
 			if path == "/" || string([]rune(path)[0:7]) == "/static" {
 				c.Header("Cache-Control", "max-age=31536000")
 			} else {
