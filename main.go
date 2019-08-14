@@ -78,7 +78,7 @@ func main() {
 		return func(c *gin.Context) {
 			c.Header("X-Frame-Options", "deny")
 			c.Header("X-XSS-Protection", "1; mode=block")
-			c.Header("Content-Security-Policy", "default-src 'none'; script-src 'self' https://www.google-analytics.com https://js.stripe.com https://ajax.cloudflare.com; style-src 'self' https://maxcdn.bootstrapcdn.com 'sha256-oWyvTH6ZfCvIDieRREt+hfVBWcf5gzk2WAW4xELF74Q='; img-src 'self'; connect-src 'self' https://js.stripe.com https://www.google-analytics.com https://www.youtube.com https://m.stripe.network https://q.stripe.com; media-src https://www.youtube.com; child-src https://www.youtube.com https://js.stripe.com https://m.stripe.network; form-action 'self'; frame-ancestors 'none';")
+			c.Header("Content-Security-Policy", "default-src 'none'; script-src 'self' https://www.google-analytics.com https://js.stripe.com https://ajax.cloudflare.com 'sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU='; style-src 'self' https://maxcdn.bootstrapcdn.com 'sha256-oWyvTH6ZfCvIDieRREt+hfVBWcf5gzk2WAW4xELF74Q='; img-src 'self'; connect-src 'self' https://js.stripe.com https://www.google-analytics.com https://www.youtube.com https://m.stripe.network https://q.stripe.com; media-src https://www.youtube.com; child-src https://www.youtube.com https://js.stripe.com https://m.stripe.network; form-action 'self'; frame-ancestors 'none';")
 			if os.Getenv("GIN_MODE") == "release" {
 				if c.Request.Header.Get("X-Forwarded-Proto") != "https" {
 					c.Redirect(http.StatusMovedPermanently, "https://www.pathfindersrobotics.org"+c.Request.URL.Path)
