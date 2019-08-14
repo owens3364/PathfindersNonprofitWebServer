@@ -72,11 +72,13 @@ func main() {
 	// Cloudflare is our DNS, and requests are first routed through the Cloudeflare CDN before they come to Heroku
 	// This provides DDOS protection as well as HSTS headers, which is why they are not included here
 
-	// TODO: Implement CSRF protection here!
+	// NOTE: CSRF protection must be added once the site gets users and stuff
 
 	router.Use(func() gin.HandlerFunc {
 		return func(c *gin.Context) {
 			c.Header("X-Frame-Options", "deny")
+			c.Header("X-XSS-Protection", "1; mode=block")
+			c.Header("Content-Security-Policy", "default-src 'none'; script-src 'self' https://www.google-analytics.com https://js.stripe.com; style-src 'self' https://maxcdn.bootstrapcdn.com; img-src 'self'; connect-src: 'self' https://js.stripe.com https://www.google-analytics.com https://www.youtube.com https://m.stripe.network https://q.stripe.com; media-src https://www.youtube.com; child-src https://www.youtube.com https://js.stripe.com https://m.stripe.network; form-action 'self'; frame-ancestors 'none';")
 			if os.Getenv("GIN_MODE") == "release" {
 				if c.Request.Header.Get("X-Forwarded-Proto") != "https" {
 					c.Redirect(http.StatusMovedPermanently, "https://www.pathfindersrobotics.org"+c.Request.URL.Path)
