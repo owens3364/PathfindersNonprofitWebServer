@@ -20,31 +20,31 @@ import (
 
 // For creating Stripe payments via Credit Card
 type PaymentData struct {
-	Amount      int    `json:"amount" binding:"Required"`
-	Description string `json:"description" binding:"Required"`
-	Name        string `json:"name" binding:"Required"`
-	Addr1       string `json:"addr1" binding:"Required"`
-	Addr2       string `json:"addr2" binding:"Required"`
-	City        string `json:"city" binding:"Required"`
-	State       string `json:"state" binding:"Required"`
-	Zip         string `json:"zip" binding:"Required"`
-	Email       string `json:"email" binding:"Required"`
-	Phone       string `json:"phone" binding:"Required"`
+	Amount      *int    `form:"amount" json:"amount" binding:"exists"`
+	Description *string `form:"description" json:"description" binding:"exists"`
+	Name        *string `form:"name" json:"name" binding:"exists"`
+	Addr1       *string `form:"addr1" json:"addr1" binding:"exists"`
+	Addr2       *string `form:"addr2" json:"addr2" binding:"exists"`
+	City        *string `form:"city" json:"city" binding:"exists"`
+	State       *string `form:"state" json:"state" binding:"exists"`
+	Zip         *string `form:"zip" json:"zip" binding:"exists"`
+	Email       *string `form:"email" json:"email" binding:"exists"`
+	Phone       *string `form:"phone" json:"phone" binding:"exists"`
 }
 
 // For creating Stripe payments via PaymentRequestButton
 type Token struct {
-	Amount      int    `json:"amount" binding:"Required"`
-	Description string `json:"description" binding:"Required"`
-	Name        string `json:"name" binding:"Required"`
-	Addr1       string `json:"addr1" binding:"Required"`
-	Addr2       string `json:"addr2" binding:"Required"`
-	City        string `json:"city" binding:"Required"`
-	State       string `json:"state" binding:"Required"`
-	Zip         string `json:"zip" binding:"Required"`
-	Email       string `json:"email" binding:"Required"`
-	Phone       string `json:"phone" binding:"Required"`
-	StripeToken string `json:"token" binding:"Required"`
+	Amount      *int    `form:"amount" json:"amount" binding:"exists"`
+	Description *string `form:"description" json:"description" binding:"exists"`
+	Name        *string `form:"name" json:"name" binding:"exists"`
+	Addr1       *string `form:"addr1" json:"addr1" binding:"exists"`
+	Addr2       *string `form:"addr2" json:"addr2" binding:"exists"`
+	City        *string `form:"city" json:"city" binding:"exists"`
+	State       *string `form:"state" json:"state" binding:"exists"`
+	Zip         *string `form:"zip" json:"zip" binding:"exists"`
+	Email       *string `form:"email" json:"email" binding:"exists"`
+	Phone       *string `form:"phone" json:"phone" binding:"exists"`
+	StripeToken *string `form:"token" json:"token" binding:"exists"`
 }
 
 func main() {
@@ -175,24 +175,24 @@ func main() {
 				fmt.Println(err)
 			}
 			intent, _ := paymentintent.New(&stripe.PaymentIntentParams{
-				Amount:      stripe.Int64(int64(paymentIntentData.Amount)),
+				Amount:      stripe.Int64(int64(*paymentIntentData.Amount)),
 				Currency:    stripe.String(string(stripe.CurrencyUSD)),
-				Description: stripe.String(paymentIntentData.Description),
+				Description: stripe.String(*paymentIntentData.Description),
 				PaymentMethodTypes: []*string{
 					cardPointer,
 				},
-				ReceiptEmail: stripe.String(paymentIntentData.Email),
+				ReceiptEmail: stripe.String(*paymentIntentData.Email),
 				Shipping: &stripe.ShippingDetailsParams{
 					Address: &stripe.AddressParams{
-						City:       stripe.String(paymentIntentData.City),
+						City:       stripe.String(*paymentIntentData.City),
 						Country:    stripe.String("US"),
-						Line1:      stripe.String(paymentIntentData.Addr1),
-						Line2:      stripe.String(paymentIntentData.Addr2),
-						PostalCode: stripe.String(paymentIntentData.Zip),
-						State:      stripe.String(paymentIntentData.State),
+						Line1:      stripe.String(*paymentIntentData.Addr1),
+						Line2:      stripe.String(*paymentIntentData.Addr2),
+						PostalCode: stripe.String(*paymentIntentData.Zip),
+						State:      stripe.String(*paymentIntentData.State),
 					},
-					Name:  stripe.String(paymentIntentData.Name),
-					Phone: stripe.String(paymentIntentData.Phone),
+					Name:  stripe.String(*paymentIntentData.Name),
+					Phone: stripe.String(*paymentIntentData.Phone),
 				},
 			})
 			c.JSON(200, gin.H{
@@ -207,21 +207,21 @@ func main() {
 				fmt.Println(err)
 			}
 			params := &stripe.ChargeParams{
-				Amount:       stripe.Int64(int64(token.Amount)),
+				Amount:       stripe.Int64(int64(*token.Amount)),
 				Currency:     stripe.String(string(stripe.CurrencyUSD)),
-				Description:  stripe.String(token.Description),
-				ReceiptEmail: stripe.String(token.Email),
+				Description:  stripe.String(*token.Description),
+				ReceiptEmail: stripe.String(*token.Email),
 				Shipping: &stripe.ShippingDetailsParams{
 					Address: &stripe.AddressParams{
-						City:       stripe.String(token.City),
+						City:       stripe.String(*token.City),
 						Country:    stripe.String("US"),
-						Line1:      stripe.String(token.Addr1),
-						Line2:      stripe.String(token.Addr2),
-						PostalCode: stripe.String(token.Zip),
-						State:      stripe.String(token.State),
+						Line1:      stripe.String(*token.Addr1),
+						Line2:      stripe.String(*token.Addr2),
+						PostalCode: stripe.String(*token.Zip),
+						State:      stripe.String(*token.State),
 					},
-					Name:  &token.Name,
-					Phone: &token.Phone,
+					Name:  token.Name,
+					Phone: token.Phone,
 				},
 			}
 			params.SetSource(token.StripeToken)
@@ -284,7 +284,7 @@ func sendPaymentEmail(data *PaymentData) {
 			fmt.Println("ERROR: 'serverPort' ENVIRONMENT VARIABLE UNAVAILABLE")
 			return
 		}
-		body := "To: " + to + ", finance@pathfindersrobotics.org\r\nSubject: New Payment\r\n\r\nNew Payment\r\nAmount: " + strconv.FormatInt(int64(data.Amount), 10) + "\r\nDescription: " + data.Description + "\r\nName: " + data.Name + "\r\nAddr1: " + data.Addr1 + "\r\nAddr2: " + data.Addr2 + "\r\nCity: " + data.City + "\r\nState: " + data.State + "\r\nZip: " + data.Zip + "\r\nEmail: " + data.Email + "\r\nPhone: " + data.Phone
+		body := "To: " + to + ", finance@pathfindersrobotics.org\r\nSubject: New Payment\r\n\r\nNew Payment\r\nAmount: " + strconv.FormatInt(int64(*data.Amount), 10) + "\r\nDescription: " + *data.Description + "\r\nName: " + *data.Name + "\r\nAddr1: " + *data.Addr1 + "\r\nAddr2: " + *data.Addr2 + "\r\nCity: " + *data.City + "\r\nState: " + *data.State + "\r\nZip: " + *data.Zip + "\r\nEmail: " + *data.Email + "\r\nPhone: " + *data.Phone
 		auth := smtp.PlainAuth("", username, password, serverAddress)
 		err := smtp.SendMail(serverAddress+":"+serverPort, auth, username, []string{to, "finance@pathfindersrobotics.org"}, []byte(body))
 		if err != nil {
@@ -297,10 +297,10 @@ func sendPaymentEmail(data *PaymentData) {
 }
 
 func determineTeamEmail(data *PaymentData) string {
-	if strings.Contains(data.Description, "FTC Pathfinders 13497") {
+	if strings.Contains(*data.Description, "FTC Pathfinders 13497") {
 		return "ftc13497@pathfindersrobotics.org"
 	}
-	if strings.Contains(data.Description, "FLL Pathfinders 7885") {
+	if strings.Contains(*data.Description, "FLL Pathfinders 7885") {
 		return "fll7885@pathfindersrobotics.org"
 	}
 	return ""
