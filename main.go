@@ -18,32 +18,33 @@ import (
 	"github.com/stripe/stripe-go/paymentintent"
 )
 
-// For creating Stripe payments
+// For creating Stripe payments via Credit Card
 type PaymentData struct {
-	Amount      int64  `json:"amount" binding:"required"`
-	Description string `json:"description" binding:"required"`
-	Name        string `json:"name" binding:"required"`
-	Addr1       string `json:"addr1" binding:"required"`
-	Addr2       string `json:"addr2" binding:"required"`
-	City        string `json:"city" binding:"required"`
-	State       string `json:"state" binding:"required"`
-	Zip         string `json:"zip" binding:"required"`
-	Email       string `json:"email" binding:"required"`
-	Phone       string `json:"phone" binding:"required"`
+	Amount      int64  `json:"amount" binding:"Required"`
+	Description string `json:"description" binding:"Required"`
+	Name        string `json:"name" binding:"Required"`
+	Addr1       string `json:"addr1" binding:"Required"`
+	Addr2       string `json:"addr2" binding:"Required"`
+	City        string `json:"city" binding:"Required"`
+	State       string `json:"state" binding:"Required"`
+	Zip         string `json:"zip" binding:"Required"`
+	Email       string `json:"email" binding:"Required"`
+	Phone       string `json:"phone" binding:"Required"`
 }
 
+// For creating Stripe payments via PaymentRequestButton
 type Token struct {
-	Amount      int64  `json:"amount" binding:"required"`
-	Description string `json:"description" binding:"required"`
-	Name        string `json:"name" binding:"required"`
-	Addr1       string `json:"addr1" binding:"required"`
-	Addr2       string `json:"addr2" binding:"required"`
-	City        string `json:"city" binding:"required"`
-	State       string `json:"state" binding:"required"`
-	Zip         string `json:"zip" binding:"required"`
-	Email       string `json:"email" binding:"required"`
-	Phone       string `json:"phone" binding:"required"`
-	StripeToken string `json:"token" binding:"required"`
+	Amount      int64  `json:"amount" binding:"Required"`
+	Description string `json:"description" binding:"Required"`
+	Name        string `json:"name" binding:"Required"`
+	Addr1       string `json:"addr1" binding:"Required"`
+	Addr2       string `json:"addr2" binding:"Required"`
+	City        string `json:"city" binding:"Required"`
+	State       string `json:"state" binding:"Required"`
+	Zip         string `json:"zip" binding:"Required"`
+	Email       string `json:"email" binding:"Required"`
+	Phone       string `json:"phone" binding:"Required"`
+	StripeToken string `json:"token" binding:"Required"`
 }
 
 func main() {
@@ -139,7 +140,10 @@ func main() {
 		if notifications {
 			router.POST("/paymentEmail", func(c *gin.Context) {
 				var data PaymentData
-				c.BindJSON(&data)
+				err := c.BindJSON(&data)
+				if err != nil {
+					fmt.Println(err)
+				}
 				sendPaymentEmail(&data)
 				c.String(200, "OK")
 			})
@@ -166,7 +170,10 @@ func main() {
 			card := "card"
 			cardPointer := &card
 			var paymentIntentData PaymentData
-			c.BindJSON(&paymentIntentData)
+			err := c.BindJSON(&paymentIntentData)
+			if err != nil {
+				fmt.Println(err)
+			}
 			intent, _ := paymentintent.New(&stripe.PaymentIntentParams{
 				Amount:      stripe.Int64(paymentIntentData.Amount),
 				Currency:    stripe.String(string(stripe.CurrencyUSD)),
@@ -195,7 +202,10 @@ func main() {
 
 		router.POST("/paymentRequest", func(c *gin.Context) {
 			var token Token
-			c.BindJSON(&token)
+			err := c.BindJSON(&token)
+			if err != nil {
+				fmt.Println(err)
+			}
 			params := &stripe.ChargeParams{
 				Amount:       stripe.Int64(token.Amount),
 				Currency:     stripe.String(string(stripe.CurrencyUSD)),
