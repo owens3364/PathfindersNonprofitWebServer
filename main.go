@@ -20,7 +20,7 @@ import (
 
 // For creating Stripe payments via Credit Card
 type PaymentData struct {
-	Amount      int64  `json:"amount" binding:"Required"`
+	Amount      int    `json:"amount" binding:"Required"`
 	Description string `json:"description" binding:"Required"`
 	Name        string `json:"name" binding:"Required"`
 	Addr1       string `json:"addr1" binding:"Required"`
@@ -34,7 +34,7 @@ type PaymentData struct {
 
 // For creating Stripe payments via PaymentRequestButton
 type Token struct {
-	Amount      int64  `json:"amount" binding:"Required"`
+	Amount      int    `json:"amount" binding:"Required"`
 	Description string `json:"description" binding:"Required"`
 	Name        string `json:"name" binding:"Required"`
 	Addr1       string `json:"addr1" binding:"Required"`
@@ -175,7 +175,7 @@ func main() {
 				fmt.Println(err)
 			}
 			intent, _ := paymentintent.New(&stripe.PaymentIntentParams{
-				Amount:      stripe.Int64(paymentIntentData.Amount),
+				Amount:      stripe.Int64(int64(paymentIntentData.Amount)),
 				Currency:    stripe.String(string(stripe.CurrencyUSD)),
 				Description: stripe.String(paymentIntentData.Description),
 				PaymentMethodTypes: []*string{
@@ -207,7 +207,7 @@ func main() {
 				fmt.Println(err)
 			}
 			params := &stripe.ChargeParams{
-				Amount:       stripe.Int64(token.Amount),
+				Amount:       stripe.Int64(int64(token.Amount)),
 				Currency:     stripe.String(string(stripe.CurrencyUSD)),
 				Description:  stripe.String(token.Description),
 				ReceiptEmail: stripe.String(token.Email),
@@ -284,7 +284,7 @@ func sendPaymentEmail(data *PaymentData) {
 			fmt.Println("ERROR: 'serverPort' ENVIRONMENT VARIABLE UNAVAILABLE")
 			return
 		}
-		body := "To: " + to + ", finance@pathfindersrobotics.org\r\nSubject: New Payment\r\n\r\nNew Payment\r\nAmount: " + strconv.FormatInt(data.Amount, 10) + "\r\nDescription: " + data.Description + "\r\nName: " + data.Name + "\r\nAddr1: " + data.Addr1 + "\r\nAddr2: " + data.Addr2 + "\r\nCity: " + data.City + "\r\nState: " + data.State + "\r\nZip: " + data.Zip + "\r\nEmail: " + data.Email + "\r\nPhone: " + data.Phone
+		body := "To: " + to + ", finance@pathfindersrobotics.org\r\nSubject: New Payment\r\n\r\nNew Payment\r\nAmount: " + strconv.FormatInt(int64(data.Amount), 10) + "\r\nDescription: " + data.Description + "\r\nName: " + data.Name + "\r\nAddr1: " + data.Addr1 + "\r\nAddr2: " + data.Addr2 + "\r\nCity: " + data.City + "\r\nState: " + data.State + "\r\nZip: " + data.Zip + "\r\nEmail: " + data.Email + "\r\nPhone: " + data.Phone
 		auth := smtp.PlainAuth("", username, password, serverAddress)
 		err := smtp.SendMail(serverAddress+":"+serverPort, auth, username, []string{to, "finance@pathfindersrobotics.org"}, []byte(body))
 		if err != nil {
