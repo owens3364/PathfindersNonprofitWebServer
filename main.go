@@ -206,6 +206,7 @@ func main() {
 			if err != nil {
 				fmt.Println(err)
 			}
+
 			params := &stripe.ChargeParams{
 				Amount:       stripe.Int64(int64(*token.Amount)),
 				Currency:     stripe.String(string(stripe.CurrencyUSD)),
@@ -223,8 +224,11 @@ func main() {
 					Name:  token.Name,
 					Phone: token.Phone,
 				},
+				Source: &stripe.SourceParams{
+					Token: token.StripeToken,
+				},
 			}
-			params.SetSource(token.StripeToken)
+			//params.SetSource(token.StripeToken)
 			ch, _ := charge.New(params)
 			if ch.Paid {
 				c.JSON(200, gin.H{
