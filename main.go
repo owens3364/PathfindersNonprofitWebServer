@@ -77,7 +77,7 @@ func main() {
 
 	router.Use(func() gin.HandlerFunc {
 		return func(c *gin.Context) {
-			c.Header("X-Frame-Options", "deny")
+			c.Header("X-Frame-Options", "allow-from https://js.stripe.com")
 			c.Header("X-XSS-Protection", "1; mode=block")
 			c.Header("Content-Security-Policy", "default-src 'none'; script-src 'self' https://storage.googleapis.com https://www.google-analytics.com https://s.ytimg.com https://www.youtube.com https://js.stripe.com https://ajax.cloudflare.com 'sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU='; style-src 'self' https://maxcdn.bootstrapcdn.com 'sha256-oWyvTH6ZfCvIDieRREt+hfVBWcf5gzk2WAW4xELF74Q='; img-src 'self' https://www.google-analytics.com data:; connect-src 'self' https://js.stripe.com https://www.google-analytics.com https://www.youtube.com https://m.stripe.network https://q.stripe.com; media-src https://www.youtube.com; child-src 'self' https://www.youtube.com https://js.stripe.com https://m.stripe.network; form-action 'self'; worker-src 'self';")
 			if os.Getenv("GIN_MODE") == "release" {
