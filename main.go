@@ -228,7 +228,6 @@ func main() {
 					Token: token.StripeToken,
 				},
 			}
-			//params.SetSource(token.StripeToken)
 			ch, _ := charge.New(params)
 			if ch.Paid {
 				c.JSON(200, gin.H{
