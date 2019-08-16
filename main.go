@@ -109,7 +109,8 @@ func main() {
 			if string([]rune(path)[0:1]) != "/" {
 				path = "/" + path
 			}
-			if path == "/" || string([]rune(path)[0:7]) == "/static" {
+			txt := string([]rune(path)[0:7])
+			if path == "/" || txt == "/static" || txt == "/assets" {
 				c.Header("Cache-Control", "max-age=31536000")
 			} else {
 				c.Header("Cache-Control", "no-cache")
@@ -303,7 +304,7 @@ func determineTeamEmail(data *PaymentData) string {
 	if strings.Contains(*data.Description, "FTC Pathfinders 13497") {
 		return "ftc13497@pathfindersrobotics.org"
 	}
-	if strings.Contains(*data.Description, "FLL Pathfinders 7885") {
+	if strings.Contains(*data.Description, "FLL Phoenix Voyagers 7885") {
 		return "fll7885@pathfindersrobotics.org"
 	}
 	return ""
