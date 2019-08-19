@@ -337,7 +337,7 @@ func sendPaymentEmail(data *PaymentData) {
 		htmlEmail = strings.ReplaceAll(htmlEmail, "${CurrentSeason}", emailData.CurrentSeason)
 		htmlEmail = strings.ReplaceAll(htmlEmail, "${EIN}", emailData.EIN)
 
-		receiptBody := "To: " + emailData.DonationReceiptsEmail + "\r\nSubject: Pathfinders Robotics Donation Receipt\r\n" + htmlEmail
+		receiptBody := "To: " + emailData.DonationReceiptsEmail + "\r\nSubject: Pathfinders Robotics Donation Receipt\r\n" + "MIME-version: 1.0;\nContent-Type: text/plain; charset=\"UTF-8\";\n\n\r\n" + htmlEmail
 		receiptAuth := smtp.PlainAuth("", emailData.DonationReceiptsEmail, emailData.DonationReceiptsPassword, emailData.ServerAddress)
 		receiptErr := smtp.SendMail(emailData.ServerAddress+":"+emailData.ServerPort, receiptAuth, emailData.DonationReceiptsEmail, []string{*emailData.DonorInformation.Email, emailData.TeamEmail, EmailFinance}, []byte(receiptBody))
 		if receiptErr != nil {
