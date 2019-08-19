@@ -165,6 +165,9 @@ func main() {
 	if siteErr == nil {
 		if siteServing {
 			router.Use(static.Serve("/", static.LocalFile("./static", true)))
+			router.NoRoute(func(c *gin.Context) {
+				c.Redirect(http.StatusMovedPermanently, "https://www.pathfindersrobotics.org/error?code=404")
+			})
 			fmt.Println("Site is being served per the 'SERVING_SITE' environment variable")
 		} else {
 			fmt.Println("Site is not being served, per the 'SERVING_SITE' environment variable.")
@@ -275,7 +278,9 @@ func main() {
 				c.JSON(200, gin.H{
 					"success": true,
 				})
-				go sendPaymentEmail(tokenToPaymentData(&token))
+				if notifErr == nil && notifications {
+					go sendPaymentEmail(tokenToPaymentData(&token))
+				}
 			} else {
 				c.JSON(200, gin.H{
 					"success": false,
@@ -337,7 +342,7 @@ func sendPaymentEmail(data *PaymentData) {
 		htmlEmail = strings.ReplaceAll(htmlEmail, "${CurrentSeason}", emailData.CurrentSeason)
 		htmlEmail = strings.ReplaceAll(htmlEmail, "${EIN}", emailData.EIN)
 
-		receiptBody := "To: " + emailData.DonationReceiptsEmail + "\r\nSubject: Pathfinders Robotics Donation Receipt\r\n" + "MIME-version: 1.0;\nContent-Type: text/plain; charset=\"UTF-8\";\n\n" + htmlEmail
+		receiptBody := "To: " + emailData.DonationReceiptsEmail + "\nSubject: Pathfinders Robotics Donation Receipt\n" + "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n" + htmlEmail
 		receiptAuth := smtp.PlainAuth("", emailData.DonationReceiptsEmail, emailData.DonationReceiptsPassword, emailData.ServerAddress)
 		receiptErr := smtp.SendMail(emailData.ServerAddress+":"+emailData.ServerPort, receiptAuth, emailData.DonationReceiptsEmail, []string{*emailData.DonorInformation.Email, emailData.TeamEmail, EmailFinance}, []byte(receiptBody))
 		if receiptErr != nil {
