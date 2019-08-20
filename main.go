@@ -316,7 +316,7 @@ func sendPaymentEmail(data *PaymentData) {
 
 	emailData, err := genEmailData(*data)
 	if err == nil {
-		notifBody := "To: " + emailData.TeamEmail + "\r\nSubject: New Payment\r\n\r\nNew Payment\r\nAmount: " + strconv.Itoa(*data.Amount) + "\r\nDescription: " + *data.Description + "\r\nName: " + *data.Name + "\r\nAddr1: " + *data.Addr1 + "\r\nAddr2: " + *data.Addr2 + "\r\nCity: " + *data.City + "\r\nState: " + *data.State + "\r\nZip: " + *data.Zip + "\r\nEmail: " + *data.Email + "\r\nPhone: " + *data.Phone
+		notifBody := "To: " + emailData.TeamEmail + "\r\nSubject: New Payment\r\n\r\nNew Payment\r\nAmount: " + fmt.Sprintf("%g", float64(*emailData.DonorInformation.Amount)/100.0) + "\r\nDescription: " + *data.Description + "\r\nName: " + *data.Name + "\r\nAddr1: " + *data.Addr1 + "\r\nAddr2: " + *data.Addr2 + "\r\nCity: " + *data.City + "\r\nState: " + *data.State + "\r\nZip: " + *data.Zip + "\r\nEmail: " + *data.Email + "\r\nPhone: " + *data.Phone
 		notifAuth := smtp.PlainAuth("", emailData.WebServerEmail, emailData.WebServerPassword, emailData.ServerAddress)
 		notifErr := smtp.SendMail(emailData.ServerAddress+":"+emailData.ServerPort, notifAuth, emailData.WebServerEmail, []string{emailData.TeamEmail, EmailFinance}, []byte(notifBody))
 		if notifErr != nil {
